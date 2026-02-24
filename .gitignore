@@ -1,0 +1,18 @@
+# Ignora todas as pastas target de qualquer subdiretório
+**/target/
+target/
+
+# Ignora arquivos de log
+*.log
+
+# Ignora arquivos do IntelliJ e IDEs
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+out/
+
+# Ignora arquivos do SO
+.DS_Store
+Thumbs.db

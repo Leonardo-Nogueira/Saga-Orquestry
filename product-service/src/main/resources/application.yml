@@ -1,0 +1,35 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgres://${DB_HOST:localhost}:${DB_PORT:5431}/${DB_NAME:product-database}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+  jpa:
+    hibernate:
+      # Para deletar o banco toda vez que descer a aplicacao
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKER:localhost:9092}
+    topic:
+      orquestrator: orquestrator
+      product-success: product-success
+      product-fail: product-fail
+
+    consumer:
+      group-id: product-group
+      auto-offset-reset: latest
+
+  # Desligar log do kafka
+logging:
+  level:
+    org:
+      apache:
+        kafka: OFF
