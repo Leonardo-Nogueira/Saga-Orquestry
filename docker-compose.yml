@@ -6,6 +6,9 @@ version: '3'
 
 services:
 
+  #
+  # KAFKA
+  #
   kafka:
     container_name: kafka
     image: obsidiandynamics/kafka
@@ -27,6 +30,9 @@ services:
     volumes:
       - ./data/kafka/data:/var/lib/kafka/data
 
+  #
+  # Redpanda
+  #
   redpanda-console:
     container_name: redpanda
     image: docker.redpanda.com/redpandadata/console:v2.3.8
@@ -45,6 +51,9 @@ services:
     depends_on:
       - "kafka"
 
+  #
+  # Order service database
+  #
   order-service-db:
     image: mongo:latest
     container_name: order-service-database
@@ -57,6 +66,9 @@ services:
     ports:
       - "27017:27017"
 
+  #
+  # Product service database
+  #
   product-service-db:
     image: postgres:latest
     container_name: product-service-database
@@ -69,6 +81,9 @@ services:
     ports:
       - "5431:5432"
 
+  #
+  # Payment service database
+  #
   payment-service-db:
     image: postgres:latest
     container_name: payment-service-database
@@ -81,6 +96,9 @@ services:
     ports:
       - "5433:5432"
 
+  #
+  # Inventory service databse
+  #
   inventory-service-db:
     image: postgres:latest
     container_name: inventory-service-database
@@ -92,6 +110,89 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5434:5432"
+
+  #
+  # Order service application
+  #
+  order-service:
+    build: './order-service'
+    container_name: order-service
+    depends_on:
+      - order-service-db
+      - kafka
+    networks:
+      - orchestrator-saga
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - MONGO_DB_URI=mongodb://admin:123456@order-service-db:27017
+    ports:
+      - "3000:3000"
+
+  product-service:
+    build: './product-service'
+    container_name: product-service
+    depends_on:
+      - product-service-db
+      - kafka
+    networks:
+      - orchestrator-saga
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=product-service-db
+      - DB_NAME=product-database
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - "8090:8090"
+
+  payment-service:
+    build: './payment-service'
+    container_name: payment-service
+    depends_on:
+      - payment-service-db
+      - kafka
+    networks:
+      - orchestrator-saga
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=payment-service-db
+      - DB_NAME=payment-database
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - "8091:8091"
+
+  inventory-service:
+    build: './inventory-service'
+    container_name: inventory-service
+    depends_on:
+      - inventory-service-db
+      - kafka
+    networks:
+      - orchestrator-saga
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=inventory-service-db
+      - DB_NAME=inventory-database
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - "8092:8092"
+
+  orquestrator-service:
+    build: './orquestry-service'
+    container_name: orquestry-service
+    depends_on:
+      - kafka
+    networks:
+      - orchestrator-saga
+    environment:
+      - KAFKA_BROKER=kafka:29092
+    ports:
+      - "8080:8080"
 
 networks:
   orchestrator-saga:

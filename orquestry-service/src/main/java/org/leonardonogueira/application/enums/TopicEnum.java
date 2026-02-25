@@ -1,4 +1,4 @@
-package org.leonardonogueira.core.domain.enums;
+package org.leonardonogueira.application.enums;
 
 public enum TopicEnum {
 
