@@ -23,7 +23,7 @@ def build_all_applications():
     threading.Thread(target=build_application,
                      args={"order-service"}).start()
     threading.Thread(target=build_application,
-                     args={"orquestry-service"}).start()
+                     args={"orchestry-service"}).start()
     threading.Thread(target=build_application,
                      args={"product-service"}).start()
     threading.Thread(target=build_application,

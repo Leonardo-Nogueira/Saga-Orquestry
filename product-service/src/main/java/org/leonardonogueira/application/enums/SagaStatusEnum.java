@@ -1,7 +1,7 @@
 package org.leonardonogueira.application.enums;
 
 public enum SagaStatusEnum {
-    SUCESS,
+    SUCCESS,
     FAILED,
     ROLLBACK
 }

@@ -182,9 +182,9 @@ services:
     ports:
       - "8092:8092"
 
-  orquestrator-service:
-    build: './orquestry-service'
-    container_name: orquestry-service
+  orchestrator-service:
+    build: './orchestry-service'
+    container_name: orchestrator-service
     depends_on:
       - kafka
     networks:

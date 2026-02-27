@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgres://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:payment-database}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:payment-database}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
 
@@ -19,7 +19,7 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BROKER:localhost:9092}
     topic:
-      orquestrator: orquestrator
+      orchestrator: orchestrator
       payment-success: payment-success
       payment-fail: payment-fail
     consumer:

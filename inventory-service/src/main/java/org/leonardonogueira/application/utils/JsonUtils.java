@@ -3,7 +3,7 @@ package org.leonardonogueira.application.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.leonardonogueira.application.domain.Event;
+import org.leonardonogueira.application.dto.Event;
 import org.springframework.stereotype.Component;
 
 @Slf4j

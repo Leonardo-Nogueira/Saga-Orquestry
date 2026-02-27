@@ -4,22 +4,25 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgres://${DB_HOST:localhost}:${DB_PORT:5434}/${DB_NAME:inventory-database}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5434}/${DB_NAME:inventory-database}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
 
   jpa:
+    generate-ddl: true
+    defer-datasource-initialization: true
     hibernate:
-      # Para deletar o banco toda vez que descer a aplicacao
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        # Força o Hibernate a cuspir qualquer erro de schema no log
+        hbm2ddl.auto: create
 
   kafka:
     bootstrap-servers: ${KAFKA_BROKER:localhost:9092}
     topic:
-      orquestrator: orquestrator
+      orchestrator: orchestrator
       inventory-success: inventory-success
       inventory-fail: inventory-fail
     consumer:
