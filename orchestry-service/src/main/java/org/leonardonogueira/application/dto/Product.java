@@ -1,4 +1,4 @@
-package org.leonardonogueira.application.document;
+package org.leonardonogueira.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductOrder {
+public class Product {
 
-    private Product product;
-    private int quantity;
+    private String code;
+    private double unitPrice;
 
 }

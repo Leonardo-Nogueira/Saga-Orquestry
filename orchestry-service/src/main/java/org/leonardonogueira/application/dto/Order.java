@@ -1,4 +1,4 @@
-package org.leonardonogueira.application.document;
+package org.leonardonogueira.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,6 +2,7 @@ package org.leonardonogueira.application.consumer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.leonardonogueira.application.service.OrchestratorService;
 import org.leonardonogueira.application.utils.JsonUtils;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class OrchestryConsumer {
 
     private final JsonUtils jsonUtils;
+    private final OrchestratorService service;
 
     @KafkaListener(
             groupId = "${spring.kafka.consumer.group-id}",
@@ -20,7 +22,7 @@ public class OrchestryConsumer {
     public void consumeStartSagaEvent(String payload) {
         log.info("Receiving event {} from start-saga topic", payload);
         var event = jsonUtils.toEvent(payload);
-//        service.startSaga(event);
+        service.startSaga(event);
     }
 
     @KafkaListener(
@@ -30,7 +32,7 @@ public class OrchestryConsumer {
     public void consumeOrchestratorEvent(String payload) {
         log.info("Receiving event {} from orchestrator topic", payload);
         var event = jsonUtils.toEvent(payload);
-//        service.continueSaga(event);
+        service.continueSaga(event);
     }
 
     @KafkaListener(
@@ -40,7 +42,7 @@ public class OrchestryConsumer {
     public void consumeFinishSagaSuccessEvent(String payload) {
         log.info("Receiving event {} from finish-success topic", payload);
         var event = jsonUtils.toEvent(payload);
-//        service.finishSagaSuccess(event);
+        service.finishSagaSuccess(event);
     }
 
     @KafkaListener(
@@ -50,7 +52,7 @@ public class OrchestryConsumer {
     public void consumeFinishSagaFailEvent(String payload) {
         log.info("Receiving event {} from finish-fail topic", payload);
         var event = jsonUtils.toEvent(payload);
-//        service.finishSagaFail(event);
+        service.finishSagaFail(event);
     }
 
 }

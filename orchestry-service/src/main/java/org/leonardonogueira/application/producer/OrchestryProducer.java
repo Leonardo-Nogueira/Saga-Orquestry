@@ -16,12 +16,12 @@ public class OrchestryProducer {
     @Value("${spring.kafka.topic.start-saga}")
     private String starSagaTopic;
 
-    public void sendEvent(String message) {
+    public void sendEvent(String payload, String topic) {
         try {
-            log.info("Sending message to topic {} with data : {}", starSagaTopic, message);
-            kafkaTemplate.send(starSagaTopic, message);
-        }catch (Exception e) {
-            log.error("Error trying to send message to topic {} with data {}", starSagaTopic, message);
+            log.info("Sending event to topic {} with data {}", topic, payload);
+            kafkaTemplate.send(topic, payload);
+        } catch (Exception ex) {
+            log.error("Error trying to send data to topic {} with data {}", topic, payload, ex);
         }
     }
 

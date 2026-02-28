@@ -98,12 +98,12 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic productValidationSuccessTopic() {
-        return buildTopic(PRODUCT_VALIDATION_SUCCESS.getTopic());
+        return buildTopic(PRODUCT_SUCCESS.getTopic());
     }
 
     @Bean
     public NewTopic productValidationFailTopic() {
-        return buildTopic(PRODUCT_VALIDATION_FAIL.getTopic());
+        return buildTopic(PRODUCT_FAIL.getTopic());
     }
 
     @Bean
