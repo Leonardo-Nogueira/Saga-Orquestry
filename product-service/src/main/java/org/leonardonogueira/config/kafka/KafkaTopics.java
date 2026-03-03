@@ -12,5 +12,4 @@ public class KafkaTopics {
     /// PRODUCER
     public static final String ORCHESTRATOR = "${spring.kafka.topic.orchestrator}";
 
-
 }

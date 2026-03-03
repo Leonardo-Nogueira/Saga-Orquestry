@@ -1,0 +1,27 @@
+{
+  "type": "record",
+  "name": "History",
+  "namespace": "org.leonardonogueira.avro.domain",
+  "fields": [
+    {
+      "name": "source",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "org.leonardonogueira.avro.common.EventStatusEnum"
+    },
+    {
+      "name": "message",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    }
+  ]
+}

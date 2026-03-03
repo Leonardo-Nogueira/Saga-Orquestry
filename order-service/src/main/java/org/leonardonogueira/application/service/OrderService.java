@@ -30,7 +30,7 @@ public class OrderService {
 
         var order = Order
                     .builder()
-                    .productOrders(orderRequest.getProducts())
+                    .products(orderRequest.getProducts())
                     .createdAt(LocalDateTime.now())
                     .transactionId(transactionId)
                     .build();

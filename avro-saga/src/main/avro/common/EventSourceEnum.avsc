@@ -1,0 +1,11 @@
+{
+  "type": "enum",
+  "name": "EventSourceEnum",
+  "namespace": "org.leonardonogueira.avro.common",
+  "symbols": [
+    "ORCHESTRATOR",
+    "PRODUCT_SERVICE",
+    "PAYMENT_SERVICE",
+    "INVENTORY_SERVICE"
+  ]
+}

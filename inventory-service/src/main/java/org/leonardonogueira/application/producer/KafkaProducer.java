@@ -2,6 +2,8 @@ package org.leonardonogueira.application.producer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.leonardonogueira.application.dto.Event;
+import org.leonardonogueira.avro.command.SagaEvent;
 import org.leonardonogueira.config.kafka.KafkaTopics;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,12 +14,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, SagaEvent> kafkaTemplate;
 
     @Value(KafkaTopics.ORCHESTRATOR)
     private String orchestratorTopic;
 
-    public void sendEvent(String message) {
+    public void sendEvent(SagaEvent message) {
         try {
             log.info("Sending message to topic {} with data : {}", orchestratorTopic, message);
             kafkaTemplate.send(orchestratorTopic, message);

@@ -1,0 +1,10 @@
+{
+  "type": "enum",
+  "name": "EventStatusEnum",
+  "namespace": "org.leonardonogueira.avro.common",
+  "symbols": [
+    "SUCCESS",
+    "FAILED",
+    "ROLLBACK"
+  ]
+}

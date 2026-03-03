@@ -19,7 +19,7 @@ public class Order {
 
     @Id
     private String id;
-    private List<ProductOrder> productOrders;
+    private List<ProductOrder> products;
     private LocalDateTime createdAt;
     private String transactionId;
     private double totalAmount;

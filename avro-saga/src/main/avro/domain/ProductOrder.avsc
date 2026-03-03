@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "ProductOrder",
+  "namespace": "org.leonardonogueira.avro.domain",
+  "fields": [
+    {
+      "name": "product",
+      "type": "org.leonardonogueira.avro.domain.Product"
+    },
+    {
+      "name": "quantity",
+      "type": "int"
+    }
+  ]
+}

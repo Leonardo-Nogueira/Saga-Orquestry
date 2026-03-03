@@ -1,0 +1,42 @@
+{
+  "type": "record",
+  "name": "SagaEvent",
+  "namespace": "org.leonardonogueira.avro.command",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "transactionId",
+      "type": "string"
+    },
+    {
+      "name": "orderId",
+      "type": "string"
+    },
+    {
+      "name": "payload",
+      "type": "org.leonardonogueira.avro.domain.Order"
+    },
+    {
+      "name": "source",
+      "type": "org.leonardonogueira.avro.common.EventSourceEnum"
+    },
+    {
+      "name": "status",
+      "type": "org.leonardonogueira.avro.common.EventStatusEnum"
+    },
+    {
+      "name": "eventHistory",
+      "type": { "type": "array", "items": "org.leonardonogueira.avro.domain.History" }
+    },
+    {
+      "name": "createdAt",
+      "type": {
+         "type": "long",
+         "logicalType": "timestamp-millis"
+      }
+    }
+  ]
+}

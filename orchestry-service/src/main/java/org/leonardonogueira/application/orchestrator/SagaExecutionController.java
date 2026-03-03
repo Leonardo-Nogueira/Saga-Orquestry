@@ -28,8 +28,8 @@ public class SagaExecutionController {
             throw new ValidationException("Source and status are required");
         }
 
-        var source = EventSourceEnum.fromString(event.getSource());
-        var status = EventStatusEnum.fromString(event.getStatus());
+        var source = event.getSource();
+        var status = event.getStatus();
 
         var topic = OrchestratorSagaHandler.getNextTopic(source, status);
 

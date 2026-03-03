@@ -25,9 +25,21 @@ spring:
       orchestrator: orchestrator
       inventory-success: inventory-success
       inventory-fail: inventory-fail
+
+    properties:
+      schema.registry.url: ${SCHEMA_REGISTRY:http://localhost:8081}
+
     consumer:
       group-id: product-group
       auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+       specific.avro.reader: true
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
 # Desligar log do kafka
 logging:

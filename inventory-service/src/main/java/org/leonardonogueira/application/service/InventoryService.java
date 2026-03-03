@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.leonardonogueira.application.domain.Inventory;
 import org.leonardonogueira.application.domain.OrderInventory;
 import org.leonardonogueira.application.dto.Event;
+import org.leonardonogueira.application.mapper.SagaMapper;
 import org.leonardonogueira.application.producer.KafkaProducer;
 import org.leonardonogueira.application.repository.InventoryOrderRepository;
 import org.leonardonogueira.application.repository.InventoryRepository;
@@ -22,6 +23,7 @@ public class InventoryService {
     private final SagaEventService saga;
     private final JsonUtils jsonUtils;
     private final KafkaProducer producer;
+    private final SagaMapper mapper;
 
     public void updateInventory(Event event) {
         try {
@@ -114,6 +116,7 @@ public class InventoryService {
     }
 
     private void sendEventToKafka(Event event) {
-        producer.sendEvent(jsonUtils.toJson(event));
+        var payload  = mapper.toAvro(event);
+        producer.sendEvent(payload);
     }
 }
