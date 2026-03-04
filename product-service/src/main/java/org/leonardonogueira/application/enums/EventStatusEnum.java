@@ -1,6 +1,6 @@
 package org.leonardonogueira.application.enums;
 
-public enum SagaStatusEnum {
+public enum EventStatusEnum {
     SUCCESS,
     FAILED,
     ROLLBACK

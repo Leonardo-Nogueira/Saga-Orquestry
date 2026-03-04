@@ -1,8 +1,8 @@
 package org.leonardonogueira.application.producer;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.leonardonogueira.config.kafka.KafkaTopics;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class SagaProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${spring.kafka.topic.start-saga}")
+    @Value(KafkaTopics.START_SAGA_TOPIC)
     private String starSagaTopic;
 
     public void sendEvent(String message) {

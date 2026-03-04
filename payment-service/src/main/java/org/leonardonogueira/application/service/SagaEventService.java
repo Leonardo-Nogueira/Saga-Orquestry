@@ -1,9 +1,10 @@
 package org.leonardonogueira.application.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.leonardonogueira.application.domain.Payment;
 import org.leonardonogueira.application.dto.Event;
 import org.leonardonogueira.application.dto.History;
-import org.leonardonogueira.application.enums.SagaStatusEnum;
+import org.leonardonogueira.application.enums.EventStatusEnum;
 import org.leonardonogueira.application.producer.KafkaProducer;
 import org.leonardonogueira.application.utils.JsonUtils;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Component
 public class SagaEventService {
 
-    private static final String INVENTORY_SERVICE = "INVENTORY_SERVICE";
+    private static final String PAYMENT_SERVICE = "PAYMENT_SERVICE";
 
     private final KafkaProducer producer;
     private final JsonUtils jsonUtils;
@@ -24,29 +25,35 @@ public class SagaEventService {
         this.jsonUtils = jsonUtils;
     }
 
-    public void handleSuccess(Event event) {
-        updateEventStatus(event, SagaStatusEnum.SUCCESS, "Inventory successfully updated");
+    public void handleSuccess(Event event, Payment payment) {
+        syncEventWithPayment(event, payment);
+        updateEventStatus(event, EventStatusEnum.SUCCESS, "Payment successfully updated");
+    }
+
+    public void syncEventWithPayment(Event event, Payment payment) {
+        event.getPayload().setTotalItems(payment.getTotalItems());
+        event.getPayload().setTotalAmount(payment.getTotalAmount());
     }
 
     public void handleFail(Event event, String message) {
-        updateEventStatus(event, SagaStatusEnum.ROLLBACK, "Fail: " + message);
+        updateEventStatus(event, EventStatusEnum.ROLLBACK, "Fail: " + message);
     }
 
     public void handleRollback(Event event) {
-        updateEventStatus(event, SagaStatusEnum.FAILED, "Rollback executed successfully");
+        updateEventStatus(event, EventStatusEnum.FAILED, "Rollback executed successfully");
     }
 
-    private void updateEventStatus(Event event, SagaStatusEnum status, String message) {
+    public void updateEventStatus(Event event, EventStatusEnum status, String message) {
         event.setStatus(status);
-        event.setSource(INVENTORY_SERVICE);
+        event.setSource(PAYMENT_SERVICE);
         addHistory(event, message);
         log.info("Saga Event updated: [Transaction: {} | Source: {} | Status: {}]",
-                event.getTransactionId(), INVENTORY_SERVICE, status);
+                event.getTransactionId(), PAYMENT_SERVICE, status);
     }
 
     private void addHistory(Event event, String message) {
         var history = History.builder()
-                .source(INVENTORY_SERVICE)
+                .source(PAYMENT_SERVICE)
                 .status(event.getStatus())
                 .message(message)
                 .createdAt(LocalDateTime.now())

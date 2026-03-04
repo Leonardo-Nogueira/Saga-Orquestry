@@ -10,9 +10,11 @@ spring:
       finish-success: finish-success
       finish-fail: finish-fail
       orchestrator: orchestrator
+
     consumer:
-      group-id: orchestrator-group
+      group-id: product-group
       auto-offset-reset: latest
+
 
 logging:
   level:

@@ -5,25 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.leonardonogueira.application.domain.Inventory;
 import org.leonardonogueira.application.domain.OrderInventory;
 import org.leonardonogueira.application.dto.Event;
-import org.leonardonogueira.application.mapper.SagaMapper;
-import org.leonardonogueira.application.producer.KafkaProducer;
 import org.leonardonogueira.application.repository.InventoryOrderRepository;
 import org.leonardonogueira.application.repository.InventoryRepository;
-import org.leonardonogueira.application.utils.JsonUtils;
 import org.leonardonogueira.config.exception.ValidationException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class InventoryService {
+public class InventoryValidateService {
 
     private final InventoryOrderRepository inventoryOrderRepository;
     private final InventoryRepository inventoryRepository;
     private final SagaEventService saga;
-    private final JsonUtils jsonUtils;
-    private final KafkaProducer producer;
-    private final SagaMapper mapper;
 
     public void updateInventory(Event event) {
         try {
@@ -34,36 +28,8 @@ public class InventoryService {
             log.error("Error updating inventory for transaction {}: {}", event.getTransactionId(), e.getMessage());
             saga.handleFail(event, e.getMessage());
         } finally {
-            sendEventToKafka(event);
+            saga.sendEvent(event);
         }
-    }
-
-    public void rollbackInventory(Event event) {
-        try {
-            returnInventoryToPreviousValues(event);
-            saga.handleRollback(event);
-        }catch (Exception e) {
-            log.error("Error rolling back inventory for transaction {}: {}", event.getTransactionId(), e.getMessage());
-            saga.handleFail(event, e.getMessage());
-        }finally {
-            sendEventToKafka(event);
-        }
-    }
-
-    private void returnInventoryToPreviousValues(Event event) {
-         inventoryOrderRepository
-         .findByOrderIdAndTransactionId(event.getPayload().getId(), event.getTransactionId())
-         .forEach(orderInventory -> {
-
-             var inventory = orderInventory.getInventory();
-             var product = inventory.getProductCode();
-             inventory.setAvailable(orderInventory.getOldQuantity());
-             inventoryRepository.save(inventory);
-
-             log.info("Restored inventory for product {} from {} to {}",
-                             product, orderInventory.getNewQuantity(), orderInventory.getOldQuantity());
-
-         });
     }
 
     private void processInventoryUpdate(Event event) {
@@ -113,10 +79,5 @@ public class InventoryService {
         if (inventoryOrderRepository.existsByOrderIdAndTransactionId(event.getPayload().getId(), event.getTransactionId())) {
             throw new ValidationException("Event already processed for this orderId: {} and transactionId: {}.");
         }
-    }
-
-    private void sendEventToKafka(Event event) {
-        var payload  = mapper.toAvro(event);
-        producer.sendEvent(payload);
     }
 }

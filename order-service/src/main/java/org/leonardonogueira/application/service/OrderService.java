@@ -35,7 +35,6 @@ public class OrderService {
                     .transactionId(transactionId)
                     .build();
 
-
         orderRepository.save(order);
 
         var payloadEvent = createPayload(order);
@@ -47,7 +46,6 @@ public class OrderService {
     }
 
     private Event createPayload(Order order) {
-
         var event = Event
                 .builder()
                 .orderId(order.getId())
@@ -59,6 +57,5 @@ public class OrderService {
         eventService.saveEvent(event);
 
         return event;
-
     }
 }

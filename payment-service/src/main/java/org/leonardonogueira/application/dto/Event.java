@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.leonardonogueira.application.enums.SagaStatusEnum;
+import org.leonardonogueira.application.enums.EventStatusEnum;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Event {
     private String orderId;
     private Order payload;
     private String source;
-    private SagaStatusEnum status;
+    private EventStatusEnum status;
     private List<History> eventHistory;
     private LocalDateTime createdAt;
 

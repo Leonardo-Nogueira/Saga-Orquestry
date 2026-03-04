@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.leonardonogueira.application.enums.SagaStatusEnum;
+import org.leonardonogueira.application.enums.EventStatusEnum;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class History {
 
     private String source;
-    private SagaStatusEnum status;
+    private EventStatusEnum status;
     private String message;
     private LocalDateTime createdAt;
 }
